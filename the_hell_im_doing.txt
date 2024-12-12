@@ -1,0 +1,51 @@
+FIRST OF ALL - I HAVE ALMOST NO CLUE HOW ACTUAL ENGINES WORK
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⣛⡫⠉⠩⡽⡭⢯⣝⣛⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣛⡵⣊⣭⠖⣠⣤⣦⣽⣿⣿⣶⣭⡛⠁⠩⣛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⠿⢛⣻⠿⣿⣿⣿⣿⣿⡿⣫⢞⣵⣿⣿⣿⣾⠿⠿⣿⣿⣿⣿⣿⣿⣷⣶⣄⢹⣷⣝⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⡟⣴⣾⣿⣿⣷⣎⢻⣿⣿⢟⣼⢣⣿⣿⣿⣿⡿⠁⣨⣴⣤⡹⣿⣿⣿⠟⠛⠛⢻⣶⡝⣿⣮⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⡃⣿⣿⣿⣿⣿⣿⣎⣿⡟⣼⡟⣼⣿⣿⣿⣿⡇⣴⠟⠛⢿⣧⢹⣿⡏⢀⣴⣶⣌⠻⣷⠹⣿⣯⢻⣿⣿⡿⣫⣽⣯⣍⡻⣿⣿⣿
+⣿⣿⣿⣷⡹⣿⣿⣿⣿⣿⡿⡼⣹⣿⣿⣾⣿⣿⡻⠿⠆⣿⠈⠃⠀⣿⡄⣿⡀⠩⠆⠈⢿⣷⢹⣷⣿⣿⡏⢿⣏⣼⣿⣿⣿⣿⣿⢸⣿⣿
+⣿⣿⣿⣿⣷⠹⣛⣛⣛⣛⣁⠃⢿⣿⣿⣿⣿⣿⡿⢿⣽⣦⣄⢬⣴⡿⢰⣿⣿⡀⡀⢂⣼⣿⢣⣿⣿⣿⣿⢸⢸⣿⣿⣿⣿⣿⢟⣾⣿⣿
+⣿⣿⡿⣫⢖⣿⣿⣿⣿⣿⣿⣿⣶⣬⡻⣿⣿⣵⣾⣦⡪⣽⣿⣧⢩⣵⣿⣿⣿⣿⣮⢛⣫⣵⢶⣯⣿⣿⡿⠏⢃⣛⣛⣛⡻⠏⣾⣿⣿⣿
+⣿⢏⣾⣵⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⢸⣿⣿⣿⣿⣷⠉⢛⠿⣿⣿⣿⣿⣿⣿⣿⣾⣟⠍⣩⣛⡟⣡⣶⣿⣿⣿⣿⣿⣿⣿⣾⣝⢿⣿
+⡏⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣶⣤⣭⡘⢿⣿⣿⣿⣿⣧⠈⠿⣶⣮⣭⣽⣭⡯⠙⣩⣴⣿⣿⣿⢨⣿⣿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣯⣿
+⣟⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡌⣿⣿⣿⣿⣿⣇⠀⠈⠙⠛⠛⠛⠁⣸⣿⣿⣿⣿⢋⣤⣶⣿⣿⣿⣿⣶⣯⣽⣿⣿⣿⣿⡟
+⡏⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⣻⠿⢿⡿⣡⡻⣿⣿⣿⣿⣿⣧⡁⠀⠄⠀⠀⢠⣿⣿⣿⣿⡇⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇
+⣷⡹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣬⡱⣿⣷⣝⢿⣿⣿⣿⣿⣷⣤⣀⣀⡤⣾⣿⣿⣿⣿⣷⡹⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷
+⣿⣷⡝⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢣⣄⡛⢿⣷⣍⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⣫⡄⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣶⣝⡻⢿⣿⣿⣿⣿⡿⢟⣫⣵⣿⣿⣿⣶⣬⣙⠿⠾⣿⣿⣿⣿⣿⡿⠿⣛⣭⣵⣿⣿⣷⣝⢿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣫⣾⣿
+⣿⣿⣿⣿⣿⣿⣿⣶⡶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣮⣭⣛⣛⣛⣛⣭⣵⣾⣿⣿⣿
+
+Which structure i imagine in my sick dumb head:
+
+- PARSER (STATIC) reads the code file and returns data to be put in SCENARIO object
+- SCENARIO (DYNAMIC) contains a map of SCRIPT objects, acessed by name
+- SCRIPT (DYNAMIC) contains a list of ACTION objects
+- ACTION (DYNAMIC) contains actual data from the file
+- SCENARIO MANAGER (STATIC) goes through SCENARIO object and creates calls to other managers
+- RESOURSE MANAGER (STATIC) is responsible for creating all of the dynamic pieces of data
+- INPUT MANAGER (STATIC) handles input from keyboard/mouse, touchscreen, gamepad and creates calls to EVENT BUS
+- EVENT BUS (STATIC)
+- DISPLAY MANAGER (DYNAMIC) is responsible for adjusting content to the current window resolution
+- PRERENDER MANAGER (STATIC) prepares the RENDER QUEUE, creates buffers if needed
+- RENDER QUEUE (STATIC) contains objects that will be rendered in the current frame and some other data
+- RENDER MANAGER (DYNAMIC ? ) renders objects and shaders from RENDER QUEUE
+
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠿⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠛⠋⢉⣀⣠⣤⣭⣭⣭⣤⣔⣂⣉⠉⠛⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⡿⠋⢠⡴⠖⠛⠻⢿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠛⠶⠤⡀⠙⠻⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⡿⠉⢠⣶⠃⡀⢀⠀⢉⠢⠈⢿⣿⣿⣿⣿⠋⡀⠀⠈⠉⢢⡈⢲⣄⢈⠻⣿⣿⣿⣿
+⣿⣿⣿⢏⣴⢡⣿⡇⠸⠁⠻⠃⠀⠀⣷⢸⣿⣿⣿⡇⢸⠀⠿⠂⠀⠀⠷⢸⣿⣆⢷⡘⢿⣿⣿
+⣿⣿⢃⣾⣿⣟⣥⣶⣾⣿⣟⣿⣿⣶⣦⣼⣿⣿⣿⣯⣴⣶⣿⣿⣿⣿⣗⣒⣬⣹⣿⣿⡌⢿⣿
+⣿⠇⣾⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡘⣿
+⡿⢸⡟⣴⣿⡟⣹⡿⠟⠛⠋⠉⢩⣴⣶⣶⣶⡆⣶⣶⣶⣶⣌⠉⠙⠛⠻⢿⣿⢹⣷⣮⠻⣧⢹
+⡇⣿⣸⡿⠟⠁⠁⠀⠀⠀⠀⢠⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠻⢿⡇⣿⢸
+⡇⣿⢻⣷⣿⡆⠀⠀⠀⠀⠀⠘⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⢀⣿⣶⡟⣿⢸
+⣇⠻⡇⣿⣿⣿⡀⠀⠀⠀⠀⠀⠹⣿⣿⣿⣿⡇⣿⣿⣿⣿⠟⠀⠀⠀⠀⠀⠀⣼⣿⣿⢃⡿⢸
+⣿⠀⢳⠸⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠉⠙⠛⠃⠛⠛⠉⠁⠀⠀⠀⠀⠀⠀⣰⣿⣿⡟⣼⠁⣾
+⣿⣧⠈⢧⠹⣿⣿⣷⡀⠀⠀⠀⠀⠀⠀⠈⠵⠶⠶⠃⠀⠀⠀⠀⠀⠀⠀⣴⣿⣿⡟⣰⡓⣰⣿
+⣿⣿⣧⠸⢷⡙⣿⣿⣿⣄⡀⠀⠀⠀⢠⣤⣤⡄⣤⣤⣄⠀⠀⠀⠀⣠⣾⣿⣿⡟⡴⠁⣰⣿⣿
+⣿⣿⣿⣷⣜⢷⣼⣿⣿⣿⣿⣦⣄⡀⠾⣿⣿⡇⣿⣿⠿⠀⣀⣤⣾⣿⣿⣿⣿⡿⢀⣼⣿⣿⣿
+⣿⣿⣿⣿⣿⣦⣙⠿⣿⣿⣿⣿⡿⢿⣿⣶⣶⣶⣶⣶⣾⡿⢿⣿⣿⣿⣿⡿⢋⣴⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣷⣮⣙⠻⢿⣿⣷⣾⣭⣭⣭⣭⣭⣵⣶⡿⠟⠛⣋⣥⣶⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣦⡤⣤⣛⣛⣛⣛⣛⣡⣬⣴⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
