@@ -4,7 +4,8 @@
 enum class DYNAMIC_DATA_TYPE
 {
     DISPLAY_MANAGER,
-    RENDER_MANAGER
+    RENDER_MANAGER,
+    COUNT
 };
 
 class EngineCore
@@ -22,5 +23,5 @@ private:
     DisplayManager* displayManager;
     PreRenderManager* preRenderManager;
     RenderManager* renderManager;
-    std::vector<std::string> dynamicDataList;
+    std::string dynamicDataList[int(DYNAMIC_DATA_TYPE::COUNT)];
 };
