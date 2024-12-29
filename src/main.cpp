@@ -6,9 +6,5 @@ int main()
     while (!WindowShouldClose())
     {
         engine.Update();
-        BeginDrawing();
-        ClearBackground(BLACK);
-
-        EndDrawing();
     } 
 }
