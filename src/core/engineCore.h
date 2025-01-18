@@ -6,12 +6,11 @@ class EngineCore
 {
 public:
     EngineCore();
-    void ReadScript();
-    void Compose();
+    void TEMP_INIT();
     void Draw();
 private:
     MessagePool messagePool;
-    RenderManager renderManager;
+    RenderManager* renderManager;
     ResourceManager* resourceManager;
     TextureStack textureStack;
     FontStack fontStack;

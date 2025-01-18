@@ -1,4 +1,4 @@
-#include "renderCandidate.h"
+#include "renderables.h"
 
 Sprite2D::~Sprite2D()
 {
@@ -17,4 +17,10 @@ void Sprite2D::SetTexture(Texture2D *texture)
 void Text2D::Draw(Vector2 absolutePosition, float absoluteScale)
 {
 
+}
+
+RenderCandidate *SpriteStack::AddSprite(std::string name, Sprite2D sprite)
+{
+    stack.emplace(name, sprite);
+    return &stack[name];
 }

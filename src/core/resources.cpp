@@ -5,7 +5,7 @@ void TextureStack::AddTexture(std::string name, Texture2D texture)
     stack.emplace(name, texture);
 }
 
-Texture2D *TextureStack::GetTexture(std::string name)
+Texture2D* TextureStack::GetTexture(std::string name)
 {
     return &stack[name];
 }

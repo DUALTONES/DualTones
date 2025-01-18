@@ -15,7 +15,6 @@ enum class ENTITY_RENDERABLE
     SPRITE_2D,
     TEXT_2D,
     NONE
-    //TO BE EXTENDED
 };
 
 class ResourceManager
@@ -24,11 +23,15 @@ public:
     ResourceManager(MessagePool* messagePool, TextureStack* textureStack, FontStack* fontStack);
     void LoadTextureToStack(std::string name, std::string path);
     void LoadFontToStack(std::string name, std::string path);
-    void CreateScene();
-    void CreateEntity(ENTITY_TRANSFORM entityTransform, ENTITY_RENDERABLE entityRenderable);
+    void CreateScene(std::string name);
+    void CreateEntity(std::string name, std::string sceneName, ENTITY_TRANSFORM entityTransform, ENTITY_RENDERABLE entityRenderable);
+    Scene* GetScene(std::string name);
 private:
     MessagePool* messagePool;
     TextureStack* textureStack;
     FontStack* fontStack;
     Texture2D fallbackTexture;
+    Scene* activeScene;
+    SpriteStack* spriteStack;
+    std::unordered_map<std::string, Scene> scenes;
 };

@@ -1,4 +1,6 @@
 #pragma once
+#include <unordered_map>
+#include <string>
 #include "raylib/raylib.h"
 
 class RenderCandidate
@@ -28,4 +30,12 @@ class Text2D : public RenderCandidate2D
 {
 public:
     void Draw(Vector2 absolutePosition, float absoluteScale) override;
+};
+
+class SpriteStack
+{
+public:
+    RenderCandidate* AddSprite(std::string name, Sprite2D sprite);
+private:
+    std::unordered_map<std::string, Sprite2D> stack;
 };

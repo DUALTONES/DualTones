@@ -1,5 +1,5 @@
 #pragma once
-#include "../render/renderCandidate.h"
+#include "../render/renderables.h"
 
 class EntityComponent
 {
@@ -33,5 +33,6 @@ public:
 class RenderableComponent : public EntityComponent
 {
 public:
+    RenderableComponent(RenderCandidate* renderable);
     RenderCandidate* renderable;
 };
