@@ -4,6 +4,7 @@
 ResourceManager::ResourceManager(MessagePool* messagePool, SpriteStack* spriteStack, TextureStack *textureStack, FontStack *fontStack)
 {
     this->messagePool = messagePool;
+    this->spriteStack = spriteStack;
     this->textureStack = textureStack;
     this->fontStack = fontStack;
     fallbackTexture = LoadTexture("../assets/funnysneko/img/fallback.png");
