@@ -7,7 +7,7 @@ RenderManager::RenderManager(TextureStack *textureStack)
 
 void RenderManager::TEMP_INIT(std::string TEMP_TEXTURE_NAME)
 {
-    TEMP_TEXTURE = textureStack->GetTexture(TEMP_TEXTURE_NAME);
+    
 }
 
 void RenderManager::Update()
@@ -22,5 +22,5 @@ void RenderManager::Update()
 
 void RenderManager::Draw()
 {
-    DrawTexture(*TEMP_TEXTURE, 100, 100, WHITE);
+
 }

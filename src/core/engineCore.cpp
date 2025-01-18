@@ -3,7 +3,7 @@
 EngineCore::EngineCore()
 {
     renderManager = new RenderManager(&textureStack);
-    resourceManager = new ResourceManager(&messagePool, &textureStack, &fontStack);
+    resourceManager = new ResourceManager(&messagePool, &spriteStack, &textureStack, &fontStack);
     TEMP_INIT();
 }
 
@@ -11,8 +11,9 @@ void EngineCore::TEMP_INIT()
 {
     resourceManager->LoadTextureToStack("TESTTEXTURE", "ehrtert");
     resourceManager->CreateScene("TESTSCENE");
-    resourceManager->CreateEntity("TESTENTITY", "TESTSCENE", ENTITY_TRANSFORM::TRANSFORM_2D, ENTITY_RENDERABLE::SPRITE_2D);
-    renderManager->TEMP_INIT("TESTTEXTURE");
+    resourceManager->CreateEntity("TESTENTITY", "TESTSCENE", ENTITY_TRANSFORM::TRANSFORM_2D);
+    resourceManager->CreateSprite("TESTSPRITE", "TESTTEXTURE");
+    resourceManager->AddRenderableToEntity(ENTITY_RENDERABLE::SPRITE_2D, "TESTSPRITE", "TESTSCENE", "TESTENTITY");
 }
 
 void EngineCore::Draw()

@@ -1,12 +1,13 @@
 #include "resourceManager.h"
 #include <iostream>
 
-ResourceManager::ResourceManager(MessagePool* messagePool, TextureStack *textureStack, FontStack *fontStack)
+ResourceManager::ResourceManager(MessagePool* messagePool, SpriteStack* spriteStack, TextureStack *textureStack, FontStack *fontStack)
 {
     this->messagePool = messagePool;
     this->textureStack = textureStack;
     this->fontStack = fontStack;
     fallbackTexture = LoadTexture("../assets/funnysneko/img/fallback.png");
+    textureStack->AddTexture("FALLBACK", fallbackTexture);
 }
 
 void ResourceManager::LoadTextureToStack(std::string name, std::string path)
@@ -27,11 +28,11 @@ void ResourceManager::LoadTextureToStack(std::string name, std::string path)
 void ResourceManager::LoadFontToStack(std::string name, std::string path)
 {
     Font font;
-    try
+    if(FileExists(path.c_str()))
     {
         font = LoadFont(path.c_str());
     }
-    catch(const std::exception& e)
+    else
     {
         messagePool->AddMessage("FAILED TO LOAD FONT " + name + " FROM " + path);
         font = GetFontDefault();
@@ -45,7 +46,33 @@ void ResourceManager::CreateScene(std::string name)
     scenes.emplace(name, scene);
 }
 
-void ResourceManager::CreateEntity(std::string name, std::string sceneName, ENTITY_TRANSFORM entityTransform, ENTITY_RENDERABLE entityRenderable)
+void ResourceManager::CreateSprite(std::string name, std::string textureName)
+{
+    Sprite2D sprite;
+    Texture2D* texture = textureStack->GetTexture(textureName);
+    if(texture == nullptr)
+    {
+        messagePool->AddMessage("TEXTURE " + textureName + " IS NOT FOUND");
+        texture = textureStack->GetTexture("FALLBACK");
+    }
+    sprite.SetTexture(texture);
+    spriteStack->AddSprite(name, sprite);
+}
+
+void ResourceManager::AddRenderableToEntity(ENTITY_RENDERABLE renderableType, std::string renderableName, std::string sceneName, std::string entityName)
+{
+    switch(renderableType)
+    {
+        case ENTITY_RENDERABLE::SPRITE_2D:
+        {
+            RenderableComponent renderableComponent(spriteStack->GetSprite(renderableName));
+            scenes[sceneName].GetEntity(entityName)->AddRenderableComponent(scenes[sceneName].AddRenderableComponent(renderableName, renderableComponent));
+            break;
+        }
+    }
+}
+
+void ResourceManager::CreateEntity(std::string name, std::string sceneName, ENTITY_TRANSFORM entityTransform)
 {
     Scene* scene = GetScene(sceneName);
     Entity entity;

@@ -13,18 +13,19 @@ enum class ENTITY_TRANSFORM
 enum class ENTITY_RENDERABLE
 {
     SPRITE_2D,
-    TEXT_2D,
-    NONE
+    TEXT_2D
 };
 
 class ResourceManager
 {
 public:
-    ResourceManager(MessagePool* messagePool, TextureStack* textureStack, FontStack* fontStack);
+    ResourceManager(MessagePool* messagePool, SpriteStack* spriteStack, TextureStack* textureStack, FontStack* fontStack);
     void LoadTextureToStack(std::string name, std::string path);
     void LoadFontToStack(std::string name, std::string path);
     void CreateScene(std::string name);
-    void CreateEntity(std::string name, std::string sceneName, ENTITY_TRANSFORM entityTransform, ENTITY_RENDERABLE entityRenderable);
+    void CreateSprite(std::string name, std::string textureName);
+    void AddRenderableToEntity(ENTITY_RENDERABLE renderableType, std::string renderableName, std::string sceneName, std::string entityName);
+    void CreateEntity(std::string name, std::string sceneName, ENTITY_TRANSFORM entityTransform);
     Scene* GetScene(std::string name);
 private:
     MessagePool* messagePool;

@@ -12,6 +12,7 @@ private:
     MessagePool messagePool;
     RenderManager* renderManager;
     ResourceManager* resourceManager;
+    SpriteStack spriteStack;
     TextureStack textureStack;
     FontStack fontStack;
     Scene* activeScene;
