@@ -12,14 +12,14 @@ ResourceManager::ResourceManager(MessagePool* messagePool, TextureStack *texture
 void ResourceManager::LoadTextureToStack(std::string name, std::string path)
 {
     Texture2D texture;
-    try
+    if(FileExists(path.c_str()))
     {
         texture = LoadTexture(path.c_str());
     }
-    catch(const std::exception& e)
+    else
     {
-        messagePool->AddMessage("FAILED TO LOAD TEXTURE " + name + " FROM " + path);
         texture = fallbackTexture;
+        messagePool->AddMessage("FAILED TO LOAD TEXTURE " + name + " FROM " + path);
     }
     textureStack->AddTexture(name, texture);
 }
