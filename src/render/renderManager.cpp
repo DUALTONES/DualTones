@@ -1,13 +1,9 @@
 #include "renderManager.h"
 
-RenderManager::RenderManager(TextureStack *textureStack)
+RenderManager::RenderManager(RenderQueue *renderQueue, DisplayManager *displayManager)
 {
-    this->textureStack = textureStack;
-}
-
-void RenderManager::TEMP_INIT(std::string TEMP_TEXTURE_NAME)
-{
-    
+    this->renderQueue = renderQueue;
+    this->displayManager = displayManager;
 }
 
 void RenderManager::Update()

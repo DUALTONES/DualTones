@@ -12,26 +12,25 @@ enum class PIVOT_POINT_2D
     RIGHT_TOP,
     RIGHT_MIDDLE,
     RIGHT_BOTTOM
-
 };
 
-class RenderCandidate
+class Renderable
 {
 public:
-    virtual ~RenderCandidate() = default;
+    virtual ~Renderable() = default;
 };
 
-class RenderCandidate2D : public RenderCandidate
+class Renderable2D : public Renderable
 {
 public:
-    virtual ~RenderCandidate2D() = default;
+    virtual ~Renderable2D() = default;
     virtual void Draw(Vector2 absolutePosition, float absoluteScale) = 0;
     virtual void CalculateDimensions() = 0;
     Vector2 dimensions;
     PIVOT_POINT_2D pivotPoint;
 };
 
-class Sprite2D : public RenderCandidate2D
+class Sprite2D : public Renderable2D
 {
 public:
     ~Sprite2D();
@@ -42,7 +41,7 @@ protected:
     Texture2D* texture;
 };
 
-class Text2D : public RenderCandidate2D
+class Text2D : public Renderable2D
 {
 public:
     void Draw(Vector2 absolutePosition, float absoluteScale) override;
@@ -51,8 +50,8 @@ public:
 class SpriteStack
 {
 public:
-    RenderCandidate* AddSprite(std::string name, Sprite2D sprite);
-    RenderCandidate* GetSprite(std::string name);
+    Renderable* AddSprite(std::string name, Sprite2D sprite);
+    Renderable* GetSprite(std::string name);
 private:
     std::unordered_map<std::string, Sprite2D> stack;
 };

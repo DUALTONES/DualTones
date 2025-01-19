@@ -1,16 +1,18 @@
 #pragma once
 #include "raylib/raylib.h"
-#include "../core/resources.h"
+#include "renderQueue.h"
+#include "displayManager.h"
 #include <iostream>
 
 class RenderManager
 {
 public:
-    RenderManager(TextureStack* textureStack);
+    RenderManager(RenderQueue* renderQueue, DisplayManager* displayManager);
     void TEMP_INIT(std::string TEMP_TEXTURE_NAME);
     void Update();
     void Draw();
 private:
     Color BackgroundColor = BLACK;
-    TextureStack* textureStack;
+    RenderQueue* renderQueue;
+    DisplayManager* displayManager;
 };
