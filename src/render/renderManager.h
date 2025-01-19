@@ -12,6 +12,5 @@ public:
     void Draw();
 private:
     Color BackgroundColor = BLACK;
-    Texture2D* TEMP_TEXTURE;
     TextureStack* textureStack;
 };

@@ -7,6 +7,8 @@ link_directories(${PROJECT_SOURCE_DIR}/lib)
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
+set(CMAKE_BUILD_TYPE Debug)
+
 add_executable(DualTones ${SOURCES})
 
 target_link_libraries(DualTones raylib)

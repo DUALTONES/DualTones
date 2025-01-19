@@ -33,6 +33,7 @@ public:
 class RenderableComponent : public EntityComponent
 {
 public:
+    RenderableComponent() = default;
     RenderableComponent(RenderCandidate* renderable);
     RenderCandidate* renderable;
 };
