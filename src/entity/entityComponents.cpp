@@ -1,6 +1,6 @@
 #include "entityComponents.h"
 
-RenderableComponent::RenderableComponent(RenderCandidate *renderable)
+RenderableComponent::RenderableComponent(Renderable *renderable)
 {
     this->renderable = renderable;
 }

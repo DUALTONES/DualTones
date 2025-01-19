@@ -16,8 +16,7 @@ public:
 class Transform2DComponent : public TransformComponent
 {
 public:
-    long positionX;
-    long positionY;
+    Vector2 position;
     float scale;
     float rotation;
 };
@@ -25,15 +24,13 @@ public:
 class Transform3DComponent : public TransformComponent
 {
 public:
-    long positionX;
-    long positionY;
-    long positionZ;
+    Vector3 position;
 };
 
 class RenderableComponent : public EntityComponent
 {
 public:
     RenderableComponent() = default;
-    RenderableComponent(RenderCandidate* renderable);
-    RenderCandidate* renderable;
+    RenderableComponent(Renderable* renderable);
+    Renderable* renderable;
 };

@@ -27,6 +27,7 @@ public:
     void AddRenderableToEntity(ENTITY_RENDERABLE renderableType, std::string renderableName, std::string sceneName, std::string entityName);
     void CreateEntity(std::string name, std::string sceneName, ENTITY_TRANSFORM entityTransform);
     Scene* GetScene(std::string name);
+    void SetActiveScene(std::string name);
 private:
     MessagePool* messagePool;
     TextureStack* textureStack;

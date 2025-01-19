@@ -8,5 +8,6 @@ void Engine::Init()
 
 void Engine::Update()
 {
+    engineCore.Compose();
     engineCore.Draw();
 }

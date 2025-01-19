@@ -1,9 +1,9 @@
 #include "resourceManager.h"
-#include <iostream>
 
 ResourceManager::ResourceManager(MessagePool* messagePool, SpriteStack* spriteStack, TextureStack *textureStack, FontStack *fontStack)
 {
     this->messagePool = messagePool;
+    this->spriteStack = spriteStack;
     this->textureStack = textureStack;
     this->fontStack = fontStack;
     fallbackTexture = LoadTexture("../assets/funnysneko/img/fallback.png");
@@ -44,6 +44,7 @@ void ResourceManager::CreateScene(std::string name)
 {
     Scene scene;
     scenes.emplace(name, scene);
+    messagePool->AddMessage("SCENE " + name + " IS CREATED");
 }
 
 void ResourceManager::CreateSprite(std::string name, std::string textureName)
@@ -57,6 +58,7 @@ void ResourceManager::CreateSprite(std::string name, std::string textureName)
     }
     sprite.SetTexture(texture);
     spriteStack->AddSprite(name, sprite);
+    messagePool->AddMessage("SPRITE " + name + " IS CREATED AND USES TEXTURE " + textureName);
 }
 
 void ResourceManager::AddRenderableToEntity(ENTITY_RENDERABLE renderableType, std::string renderableName, std::string sceneName, std::string entityName)
@@ -97,4 +99,9 @@ void ResourceManager::CreateEntity(std::string name, std::string sceneName, ENTI
 Scene *ResourceManager::GetScene(std::string name)
 {
     return &scenes[name];
+}
+
+void ResourceManager::SetActiveScene(std::string name)
+{
+    activeScene = &scenes[name];
 }
