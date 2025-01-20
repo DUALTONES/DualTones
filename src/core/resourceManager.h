@@ -3,23 +3,10 @@
 #include "../debug/messagePool.h"
 #include "../composing/scene.h"
 
-enum class ENTITY_TRANSFORM
-{
-    TRANSFORM_2D,
-    TRANSFORM_3D,
-    NONE
-};
-
-enum class ENTITY_RENDERABLE
-{
-    SPRITE_2D,
-    TEXT_2D
-};
-
 class ResourceManager
 {
 public:
-    ResourceManager(MessagePool* messagePool, SpriteStack* spriteStack, TextureStack* textureStack, FontStack* fontStack);
+    ResourceManager(MessagePool* messagePool, SpriteStack* spriteStack, Scene* activeScene, TextureStack* textureStack, FontStack* fontStack);
     void LoadTextureToStack(std::string name, std::string path);
     void LoadFontToStack(std::string name, std::string path);
     void CreateScene(std::string name);

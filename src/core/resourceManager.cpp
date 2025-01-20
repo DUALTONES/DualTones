@@ -1,9 +1,10 @@
 #include "resourceManager.h"
 
-ResourceManager::ResourceManager(MessagePool* messagePool, SpriteStack* spriteStack, TextureStack *textureStack, FontStack *fontStack)
+ResourceManager::ResourceManager(MessagePool* messagePool, SpriteStack* spriteStack, Scene* activeScene, TextureStack *textureStack, FontStack *fontStack)
 {
     this->messagePool = messagePool;
     this->spriteStack = spriteStack;
+    this->activeScene = activeScene;
     this->textureStack = textureStack;
     this->fontStack = fontStack;
     fallbackTexture = LoadTexture("../assets/funnysneko/img/fallback.png");
@@ -45,6 +46,10 @@ void ResourceManager::CreateScene(std::string name)
     Scene scene;
     scenes.emplace(name, scene);
     messagePool->AddMessage("SCENE " + name + " IS CREATED");
+    if(scenes.find(name) == scenes.end())
+    {
+        messagePool->AddMessage("SCENE WASN`T EMPLACED");
+    }
 }
 
 void ResourceManager::CreateSprite(std::string name, std::string textureName)
@@ -103,5 +108,6 @@ Scene *ResourceManager::GetScene(std::string name)
 
 void ResourceManager::SetActiveScene(std::string name)
 {
-    activeScene = &scenes[name];
+    activeScene = GetScene(name);
+    messagePool->AddMessage("SCENE" + name + " IS NOW ACTIVE");
 }

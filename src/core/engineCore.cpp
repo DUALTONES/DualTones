@@ -2,9 +2,9 @@
 
 EngineCore::EngineCore()
 {
-    renderManager = new RenderManager(&renderQueue, &displayManager);
-    resourceManager = new ResourceManager(&messagePool, &spriteStack, &textureStack, &fontStack);
     composer = new Composer(&messagePool, &renderQueue, activeScene);
+    renderManager = new RenderManager(&renderQueue, &displayManager);
+    resourceManager = new ResourceManager(&messagePool, &spriteStack, activeScene, &textureStack, &fontStack);
     TEMP_INIT();
 }
 

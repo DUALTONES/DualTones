@@ -1,6 +1,19 @@
 #pragma once
 #include "../render/renderables.h"
 
+enum class ENTITY_TRANSFORM
+{
+    TRANSFORM_2D,
+    TRANSFORM_3D,
+    NONE
+};
+
+enum class ENTITY_RENDERABLE
+{
+    SPRITE_2D,
+    TEXT_2D
+};
+
 class EntityComponent
 {
 public:
