@@ -1,9 +1,9 @@
 #include "renderManager.h"
 
-RenderManager::RenderManager(RenderQueue *renderQueue, DisplayManager *displayManager)
+RenderManager::RenderManager(MessagePool* messagePool, RenderQueue *renderQueue)
 {
+    this->messagePool = messagePool;
     this->renderQueue = renderQueue;
-    this->displayManager = displayManager;
 }
 
 void RenderManager::Update()
@@ -18,5 +18,11 @@ void RenderManager::Update()
 
 void RenderManager::Draw()
 {
-
+    for(const RenderCandidate& renderCandidate : renderQueue->queue)
+    {
+        if(Renderable2D* renderable = dynamic_cast<Renderable2D*>(renderCandidate.renderable))
+        {
+            renderable->Draw(renderCandidate.absolutePosition, renderCandidate.absoluteScale);
+        }
+    }
 }

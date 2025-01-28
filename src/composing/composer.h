@@ -1,15 +1,19 @@
 #pragma once
-#include "../render/renderQueue.h"
 #include "scene.h"
+#include "../render/renderQueue.h"
 #include "../debug/messagePool.h"
+#include "displayManager.h"
+#include <vector>
 
 class Composer
 {
 public:
-    Composer(MessagePool* messagePool, RenderQueue* renderQueue, Scene* activeScene);
+    Composer(MessagePool* messagePool, RenderQueue* renderQueue, DisplayManager* displayManager);
     void Update();
+    void SetScenes(std::vector<Scene*> scenes);
 private:
-    MessagePool* messagePool;
+    DisplayManager* displayManager;
     RenderQueue* renderQueue;
-    Scene* activeScene;
+    MessagePool* messagePool;
+    std::vector<Scene*> scenes;
 };

@@ -4,9 +4,8 @@
 class Entity
 {
 public:
-    Entity();
-    void AddTransformComponent(TransformComponent* transformComponent);
-    void AddRenderableComponent(RenderableComponent* renderableComponent);
-    TransformComponent* transformComponent;
-    RenderableComponent* renderableComponent;
+    TransformComponent* transformComponent = nullptr;
+    RenderableComponent* renderableComponent = nullptr;
+    RenderableAttributesComponent* renderableAttributesComponent = nullptr;
+    TextAttributesComponent* textAttributesComponent = nullptr;
 };

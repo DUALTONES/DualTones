@@ -5,7 +5,7 @@
 class RenderQueue
 {
 public:
+    void CreateRenderCandidate(Renderable* renderable, Vector2 absolutePosition, float absoluteScale);
     void Flush();
-    void AddRenderCandidate(TransformComponent* transformComponent, RenderableComponent* renderableComponent);
     std::vector<RenderCandidate> queue;
 };

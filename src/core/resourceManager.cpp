@@ -1,28 +1,42 @@
 #include "resourceManager.h"
 
-ResourceManager::ResourceManager(MessagePool* messagePool, SpriteStack* spriteStack, TextureStack *textureStack, FontStack *fontStack)
+ResourceManager::ResourceManager(MessagePool* messagePool, Renderable2DStack* renderable2DStack, TextureStack *textureStack, FontStack *fontStack, Composer* composer)
 {
     this->messagePool = messagePool;
-    this->spriteStack = spriteStack;
+    this->renderable2DStack = renderable2DStack;
     this->textureStack = textureStack;
     this->fontStack = fontStack;
+    this->composer = composer;
     fallbackTexture = LoadTexture("../assets/funnysneko/img/fallback.png");
     textureStack->AddTexture("FALLBACK", fallbackTexture);
+    CreateScene("GUI");
+    CreateScene("DEBUG");
 }
 
 void ResourceManager::LoadTextureToStack(std::string name, std::string path)
 {
     Texture2D texture;
+    bool success = true;
     if(FileExists(path.c_str()))
     {
+
         texture = LoadTexture(path.c_str());
     }
     else
     {
+        success = false;
         texture = fallbackTexture;
-        messagePool->AddMessage("FAILED TO LOAD TEXTURE " + name + " FROM " + path);
+        messagePool->AddMessage("[ RESOURCES ] FAILED TO LOAD TEXTURE FROM |-" + path + "-| BECAUSE FILE ISN'T FOUND");
     }
     textureStack->AddTexture(name, texture);
+    if(success)
+    {
+        messagePool->AddMessage("[ RESOURCES ] CREATED TEXTURE |-" + name + "-|");
+    }
+    else
+    {
+        messagePool->AddMessage("[ RESOURCES ] CREATED TEXTURE |-" + name + "-| AS A DEFAULT TEXTURE");
+    }
 }
 
 void ResourceManager::LoadFontToStack(std::string name, std::string path)
@@ -31,10 +45,11 @@ void ResourceManager::LoadFontToStack(std::string name, std::string path)
     if(FileExists(path.c_str()))
     {
         font = LoadFont(path.c_str());
+        messagePool->AddMessage("[ RESOURCES ] LOADED FONT |-" + name + "-| FROM |-" + path + "-|");
     }
     else
     {
-        messagePool->AddMessage("FAILED TO LOAD FONT " + name + " FROM " + path);
+        messagePool->AddMessage("[ RESOURCES ] FAILED TO LOAD FONT |-" + name + "-| FROM |-" + path + "-| BECAUSE FILE ISN'T FOUND");
         font = GetFontDefault();
     }
     fontStack->AddFont(name, font);
@@ -44,64 +59,116 @@ void ResourceManager::CreateScene(std::string name)
 {
     Scene scene;
     scenes.emplace(name, scene);
-    messagePool->AddMessage("SCENE " + name + " IS CREATED");
+    messagePool->AddMessage("[ RESOURCES ] SCENE |-" + name + "-| IS CREATED");
 }
 
-void ResourceManager::CreateSprite(std::string name, std::string textureName)
-{
-    Sprite2D sprite;
-    Texture2D* texture = textureStack->GetTexture(textureName);
-    if(texture == nullptr)
-    {
-        messagePool->AddMessage("TEXTURE " + textureName + " IS NOT FOUND");
-        texture = textureStack->GetTexture("FALLBACK");
-    }
-    sprite.SetTexture(texture);
-    spriteStack->AddSprite(name, sprite);
-    messagePool->AddMessage("SPRITE " + name + " IS CREATED AND USES TEXTURE " + textureName);
-}
-
-void ResourceManager::AddRenderableToEntity(ENTITY_RENDERABLE renderableType, std::string renderableName, std::string sceneName, std::string entityName)
-{
-    switch(renderableType)
-    {
-        case ENTITY_RENDERABLE::SPRITE_2D:
-        {
-            RenderableComponent renderableComponent(spriteStack->GetSprite(renderableName));
-            scenes[sceneName].GetEntity(entityName)->AddRenderableComponent(scenes[sceneName].AddRenderableComponent(renderableName, renderableComponent));
-            break;
-        }
-    }
-}
-
-void ResourceManager::CreateEntity(std::string name, std::string sceneName, ENTITY_TRANSFORM entityTransform)
+void ResourceManager::CreateEntity(std::string name, std::string sceneName, ENTITY_TRANSFORM entityTransform, RENDERABLE_TYPE renderableType, PIVOT_POINT_2D pivotPoint)
 {
     Scene* scene = GetScene(sceneName);
-    Entity entity;
-    switch(entityTransform)
+    if(scene != nullptr)
     {
-        case ENTITY_TRANSFORM::TRANSFORM_2D:
+        Entity entity;
+        switch(entityTransform)
         {
-            Transform2DComponent transformComponent;
-            entity.AddTransformComponent(scene->AddTransform2DComponent(name, transformComponent));
-            break;
+            case ENTITY_TRANSFORM::TRANSFORM_2D:
+            {
+                entity.transformComponent = scene->AddTransform2DComponent(name);
+                break;
+            }
+            case ENTITY_TRANSFORM::TRANSFORM_3D:
+            {
+                entity.transformComponent = scene->AddTransform3DComponent(name);
+                break;
+            }
         }
-        case ENTITY_TRANSFORM::TRANSFORM_3D:
+        switch(renderableType)
         {
-            Transform3DComponent transformComponent;
-            entity.AddTransformComponent(scene->AddTransform3DComponent(name, transformComponent));
-            break;
+            case RENDERABLE_TYPE::TEXTURE:
+            case RENDERABLE_TYPE::TEXT:
+            {
+                entity.renderableComponent = scene->AddRenderableComponent(name, CreateRenderable2D(name, renderableType));
+                Renderable2D* renderable2D = dynamic_cast<Renderable2D*>(entity.renderableComponent->renderable);
+                entity.renderableAttributesComponent = scene->AddRenderableAttributesComponent(name, renderable2D->renderable2DAtrributes);
+                if(renderableType == RENDERABLE_TYPE::TEXT)
+                {
+                    entity.textAttributesComponent = scene->AddTextAttributesComponent(name, renderable2D->renderable2DAtrributes->textAttributes);
+                }
+                break;
+            }
+        }
+        entity.renderableAttributesComponent->renderableAttributes->pivotPoint = pivotPoint;
+        scene->AddEntity(name, entity);
+        messagePool->AddMessage("[ RESOURCES ] CREATED ENTITY |-" + name + "-| IN THE SCENE |-" + sceneName + "-|");
+    }
+    else
+    {
+        messagePool->AddMessage("[ RESOURCES ] FAILED TO CREATE ENTITY |-" + name + "-| BECAUSE SCENE |-" + sceneName + "-| ISN'T FOUND");
+    }
+}
+
+void ResourceManager::AddTextureToEntity(std::string name, std::string sceneName, std::string textureName)
+{
+    Scene* scene = GetScene(sceneName);
+    if(scene != nullptr)
+    {
+        Entity* entity = scene->GetEntity(name);
+        if(entity != nullptr)
+        {
+            if(entity->renderableAttributesComponent->renderableAttributes->renderableType == RENDERABLE_TYPE::TEXTURE)
+            {
+                Texture2D* texture = textureStack->GetTexture(textureName);
+                if(texture != nullptr)
+                {
+                    entity->renderableAttributesComponent->renderableAttributes->texture = texture;
+                }
+                else
+                {
+                    messagePool->AddMessage("[ RESOURCES ] NO TEXTURE");
+                }
+            }
+            else
+            {
+                messagePool->AddMessage("[ RESOURCES ] NO ATTRIBUTES");
+            }
+        }
+        else
+        {
+            messagePool->AddMessage("[ RESOURCES ] NO ENTITY");
         }
     }
-    messagePool->AddMessage("ADDED ENTITY " + name + " TO THE SCENE " + sceneName);
+    else
+    {
+        messagePool->AddMessage("[ RESOURCES ] NO SCENE");
+    }
+}
+
+Renderable2D* ResourceManager::CreateRenderable2D(std::string name, RENDERABLE_TYPE renderableType)
+{
+    renderable2DStack->AddRenderable2D(name, renderableType);
+    return renderable2DStack->GetRenderable2D(name);
+}
+
+void ResourceManager::SetScene(std::string name)
+{
+    std::vector<Scene*> activeScenes;
+    Scene* scene = GetScene(name);
+    if(scene != nullptr)
+    {
+        activeScenes.push_back(scene);
+        composer->SetScenes(activeScenes);
+        messagePool->AddMessage("[ RESOURCES ] SET ACTIVE SCENE |-" + name + "-|");
+    }
+    else
+    {
+        messagePool->AddMessage("[ RESOURCES ] FAILED TO SET ACTIVE SCENE |-" + name + "-| BECAUSE SCENE ISN'T FOUND");
+    }
 }
 
 Scene *ResourceManager::GetScene(std::string name)
 {
+    if(scenes.find(name) == scenes.end())
+    {
+        return nullptr;
+    }
     return &scenes[name];
-}
-
-void ResourceManager::SetActiveScene(std::string name)
-{
-    activeScene = &scenes[name];
 }

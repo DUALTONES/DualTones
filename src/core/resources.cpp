@@ -7,6 +7,10 @@ void TextureStack::AddTexture(std::string name, Texture2D texture)
 
 Texture2D* TextureStack::GetTexture(std::string name)
 {
+    if(stack.find(name) == stack.end())
+    {
+        return nullptr;
+    }
     return &stack[name];
 }
 
@@ -22,6 +26,10 @@ void FontStack::AddFont(std::string name, Font font)
 
 Font *FontStack::GetFont(std::string name)
 {
+    if(stack.find(name) == stack.end())
+    {
+        return nullptr;
+    }
     return &stack[name];
 }
 

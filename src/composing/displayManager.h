@@ -1,6 +1,7 @@
 #pragma once
 #include "raylib/raylib.h"
 #include "raylib/raymath.h"
+#include <iostream>
 
 class DisplayManager
 {
@@ -16,7 +17,7 @@ private:
     Vector2 referenceResolution;
     Vector2 resolution;
     Vector2 halfResolution;
-    Vector2 relativeCoordinates;
+    Vector2 relativeCoordinates = {100,100};
     Vector2 relativeScale;
     float scale;
 };

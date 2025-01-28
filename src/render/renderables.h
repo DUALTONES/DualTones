@@ -11,8 +11,16 @@ enum class PIVOT_POINT_2D
     LEFT_BOTTOM,
     RIGHT_TOP,
     RIGHT_MIDDLE,
-    RIGHT_BOTTOM
+    RIGHT_BOTTOM,
+    TOP_MIDDLE,
+    BOTTOM_MIDDLE
+};
 
+enum class RENDERABLE_TYPE
+{
+    NONE,
+    TEXTURE,
+    TEXT
 };
 
 class Renderable
@@ -21,38 +29,44 @@ public:
     virtual ~Renderable() = default;
 };
 
+class TextAttributes
+{
+public:
+    std::string text;
+    Font* font;
+    float fontSize;
+    float spacing;
+};
+
+class Renderable2DAttributes
+{
+public:
+    Vector2 dimensions = {0, 0};
+    Vector2 pivotOffset = {0, 0};
+    PIVOT_POINT_2D pivotPoint;
+    Texture2D* texture = nullptr;
+    TextAttributes* textAttributes = nullptr;
+    RENDERABLE_TYPE renderableType;
+};
+
 class Renderable2D : public Renderable
 {
 public:
-    virtual ~Renderable2D() = default;
-    virtual void Draw(Vector2 absolutePosition, float absoluteScale) = 0;
-    virtual void CalculateDimensions() = 0;
-    Vector2 dimensions;
-    PIVOT_POINT_2D pivotPoint;
+    void Draw(Vector2 absolutePosition, float absoluteScale);
+    void CalculateDimensions();
+    void CalculateOffset();
+    Renderable2DAttributes* renderable2DAtrributes;
 };
 
-class Sprite2D : public Renderable2D
+class Renderable2DStack
 {
 public:
-    ~Sprite2D();
-    void Draw(Vector2 absolutePosition, float absoluteScale) override;
-    void SetTexture(Texture2D* texture);
-    void CalculateDimensions() override;
-protected:
-    Texture2D* texture;
-};
-
-class Text2D : public Renderable2D
-{
-public:
-    void Draw(Vector2 absolutePosition, float absoluteScale) override;
-};
-
-class SpriteStack
-{
-public:
-    Renderable* AddSprite(std::string name, Sprite2D sprite);
-    Renderable* GetSprite(std::string name);
+    void AddRenderable2D(std::string name, RENDERABLE_TYPE renderableType);
+    Renderable2D* GetRenderable2D(std::string name);
 private:
-    std::unordered_map<std::string, Sprite2D> stack;
+    Renderable2DAttributes* AddRenderable2DAttributes(std::string name);
+    TextAttributes* AddTextAttributes(std::string name);
+    std::unordered_map<std::string, Renderable2D> stack;
+    std::unordered_map<std::string, Renderable2DAttributes> attributesStack;
+    std::unordered_map<std::string, TextAttributes> textAttributesStack;
 };

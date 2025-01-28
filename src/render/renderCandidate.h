@@ -4,6 +4,7 @@
 class RenderCandidate
 {
 public:
-    TransformComponent* transformComponent;
-    RenderableComponent* renderableComponent;
+    Renderable* renderable;
+    Vector2 absolutePosition;
+    float absoluteScale;
 };

@@ -4,7 +4,6 @@
 class Engine
 {
 public:
-    void Init();
     void Update();
 private:
     EngineCore engineCore;

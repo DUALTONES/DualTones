@@ -1,28 +1,39 @@
 #include "composer.h"
 
-Composer::Composer(MessagePool* messagePool, RenderQueue *renderQueue, Scene *activeScene)
+Composer::Composer(MessagePool *messagePool, RenderQueue *renderQueue, DisplayManager* displayManager)
 {
     this->messagePool = messagePool;
     this->renderQueue = renderQueue;
-    this->activeScene = activeScene;
+    this->displayManager = displayManager;
 }
 
 void Composer::Update()
 {
     renderQueue->Flush();
-    if(activeScene != nullptr)
+    float scale = displayManager->GetScale();
+    for(Scene* scene : scenes)
     {
-        for(auto& pair : activeScene->entities)
+        for(const std::pair<std::string, Entity>& pair : scene->entities)
         {
-            Entity* entity = &pair.second;
-            if(entity->transformComponent != nullptr && entity->renderableComponent != nullptr)
+            const Entity& entity = pair.second;
+            if(Renderable2D* renderable2D = dynamic_cast<Renderable2D*>(entity.renderableComponent->renderable))
             {
-                renderQueue->AddRenderCandidate(entity->transformComponent, entity->renderableComponent);
+                if(Transform2DComponent* transform2DComponent = dynamic_cast<Transform2DComponent*>(entity.transformComponent))
+                {
+                    if(Vector2Equals(entity.renderableAttributesComponent->renderableAttributes->dimensions, {0, 0}))
+                    {
+                        renderable2D->CalculateDimensions();
+                    }
+                    float absoluteScale = scale * transform2DComponent->scale;
+                    Vector2 absolutePosition = Vector2Add(displayManager->GetAbsolutePosition(transform2DComponent->position), Vector2Scale(entity.renderableAttributesComponent->renderableAttributes->pivotOffset, absoluteScale));
+                    renderQueue->CreateRenderCandidate(renderable2D, absolutePosition, absoluteScale);
+                }
             }
         }
     }
-    else
-    {
-        messagePool->AddMessage("NO ACTIVE SCENE");
-    }
+}
+
+void Composer::SetScenes(std::vector<Scene *> scenes)
+{
+    this->scenes = scenes;
 }

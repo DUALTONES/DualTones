@@ -16,7 +16,7 @@ private:
     DisplayManager displayManager;
     RenderManager* renderManager;
     ResourceManager* resourceManager;
-    SpriteStack spriteStack;
+    Renderable2DStack renderable2DStack;
     TextureStack textureStack;
     FontStack fontStack;
     Scene* activeScene;

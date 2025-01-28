@@ -2,24 +2,26 @@
 
 EngineCore::EngineCore()
 {
-    renderManager = new RenderManager(&renderQueue, &displayManager);
-    resourceManager = new ResourceManager(&messagePool, &spriteStack, &textureStack, &fontStack);
-    composer = new Composer(&messagePool, &renderQueue, activeScene);
+    displayManager.SetReferenceResolution({1280, 720});
+    displayManager.SetRelativeCoordinats({100, 100});
+    renderManager = new RenderManager(&messagePool, &renderQueue);
+    composer = new Composer(&messagePool, &renderQueue, &displayManager);
+    resourceManager = new ResourceManager(&messagePool, &renderable2DStack, &textureStack, &fontStack, composer);
     TEMP_INIT();
 }
 
 void EngineCore::TEMP_INIT()
 {
-    resourceManager->LoadTextureToStack("TESTTEXTURE", "ehrtert");
     resourceManager->CreateScene("TESTSCENE");
-    resourceManager->CreateEntity("TESTENTITY", "TESTSCENE", ENTITY_TRANSFORM::TRANSFORM_2D);
-    resourceManager->CreateSprite("TESTSPRITE", "TESTTEXTURE");
-    resourceManager->AddRenderableToEntity(ENTITY_RENDERABLE::SPRITE_2D, "TESTSPRITE", "TESTSCENE", "TESTENTITY");
-    resourceManager->SetActiveScene("TESTSCENE");
+    resourceManager->CreateEntity("TESTENTITY", "TESTSCENE", ENTITY_TRANSFORM::TRANSFORM_2D, RENDERABLE_TYPE::TEXTURE);
+    resourceManager->LoadTextureToStack("TESTTEXTURE", "wrongPath");
+    resourceManager->AddTextureToEntity("TESTENTITY", "TESTSCENE", "TESTTEXTURE");
+    resourceManager->SetScene("TESTSCENE");
 }
 
 void EngineCore::Compose()
 {
+    displayManager.Update();
     composer->Update();
 }
 
