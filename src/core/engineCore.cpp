@@ -13,9 +13,12 @@ EngineCore::EngineCore()
 void EngineCore::TEMP_INIT()
 {
     resourceManager->CreateScene("TESTSCENE");
-    resourceManager->CreateEntity("TESTENTITY", "TESTSCENE", ENTITY_TRANSFORM::TRANSFORM_2D, RENDERABLE_TYPE::TEXTURE);
+    //resourceManager->CreateEntity("TESTENTITY", "TESTSCENE", ENTITY_TRANSFORM::TRANSFORM_2D, RENDERABLE_TYPE::TEXTURE);
+    resourceManager->CreateEntity("TESTTEXTENTITY", "TESTSCENE", ENTITY_TRANSFORM::TRANSFORM_2D, RENDERABLE_TYPE::TEXT);
     resourceManager->LoadTextureToStack("TESTTEXTURE", "wrongPath");
-    resourceManager->AddTextureToEntity("TESTENTITY", "TESTSCENE", "TESTTEXTURE");
+    resourceManager->LoadFontToStack("TESTFONT", "../assets/vendor/fonts/PressStart2P/PressStart2P-Regular.ttf");
+    //resourceManager->AddTextureToEntity("TESTENTITY", "TESTSCENE", "TESTTEXTURE");
+    resourceManager->AddTextToEntity("TESTTEXTENTITY", "TESTSCENE", "TEXT IS NOW SUPPORTED", "TESTFONT", 12, 0);
     resourceManager->SetScene("TESTSCENE");
 }
 

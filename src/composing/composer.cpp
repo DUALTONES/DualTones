@@ -20,12 +20,9 @@ void Composer::Update()
             {
                 if(Transform2DComponent* transform2DComponent = dynamic_cast<Transform2DComponent*>(entity.transformComponent))
                 {
-                    if(Vector2Equals(entity.renderableAttributesComponent->renderableAttributes->dimensions, {0, 0}))
-                    {
-                        renderable2D->CalculateDimensions();
-                    }
                     float absoluteScale = scale * transform2DComponent->scale;
-                    Vector2 absolutePosition = Vector2Add(displayManager->GetAbsolutePosition(transform2DComponent->position), Vector2Scale(entity.renderableAttributesComponent->renderableAttributes->pivotOffset, absoluteScale));
+                    Vector2 absolutePosition = Vector2Add(displayManager->GetAbsolutePosition(transform2DComponent->position),
+                    Vector2Scale(entity.renderableAttributesComponent->renderableAttributes->pivotOffset, absoluteScale));
                     renderQueue->CreateRenderCandidate(renderable2D, absolutePosition, absoluteScale);
                 }
             }

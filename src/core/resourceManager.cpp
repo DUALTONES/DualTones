@@ -106,6 +106,48 @@ void ResourceManager::CreateEntity(std::string name, std::string sceneName, ENTI
     }
 }
 
+void ResourceManager::AddTextToEntity(std::string name, std::string sceneName, std::string text, std::string fontName, float fontSize, float spacing)
+{
+    Scene* scene = GetScene(sceneName);
+    if(scene != nullptr)
+    {
+        Entity* entity = scene->GetEntity(name);
+        if(entity != nullptr)
+        {
+            if(entity->renderableAttributesComponent->renderableAttributes->renderableType == RENDERABLE_TYPE::TEXT)
+            {
+                Font* font = fontStack->GetFont(fontName);
+                if(font != nullptr)
+                {
+                    entity->textAttributesComponent->textAttributes->text = text;
+                    entity->textAttributesComponent->textAttributes->font = font;
+                    entity->textAttributesComponent->textAttributes->fontSize = fontSize;
+                    entity->textAttributesComponent->textAttributes->spacing = spacing;
+                    Renderable2D* renderable2D = dynamic_cast<Renderable2D*>(entity->renderableComponent->renderable);
+                    renderable2D->CalculateDimensions();
+                    messagePool->AddMessage("[ RESOURCES ] ADDED TEXT TO ENTITY");
+                }
+                else
+                {
+
+                }
+            }
+            else
+            {
+
+            }
+        }
+        else
+        {
+
+        }
+    }
+    else
+    {
+
+    }
+}
+
 void ResourceManager::AddTextureToEntity(std::string name, std::string sceneName, std::string textureName)
 {
     Scene* scene = GetScene(sceneName);
@@ -120,6 +162,8 @@ void ResourceManager::AddTextureToEntity(std::string name, std::string sceneName
                 if(texture != nullptr)
                 {
                     entity->renderableAttributesComponent->renderableAttributes->texture = texture;
+                    Renderable2D* renderable2D = dynamic_cast<Renderable2D*>(entity->renderableComponent->renderable);
+                    renderable2D->CalculateDimensions();
                 }
                 else
                 {
