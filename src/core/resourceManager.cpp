@@ -62,7 +62,7 @@ void ResourceManager::CreateScene(std::string name)
     messagePool->AddMessage("[ RESOURCES ] SCENE |-" + name + "-| IS CREATED");
 }
 
-void ResourceManager::CreateEntity(std::string name, std::string sceneName, ENTITY_TRANSFORM entityTransform, RENDERABLE_TYPE renderableType, PIVOT_POINT_2D pivotPoint)
+Entity* ResourceManager::CreateEntity(std::string name, std::string sceneName, ENTITY_TRANSFORM entityTransform, RENDERABLE_TYPE renderableType, PIVOT_POINT_2D pivotPoint)
 {
     Scene* scene = GetScene(sceneName);
     if(scene != nullptr)
@@ -99,10 +99,12 @@ void ResourceManager::CreateEntity(std::string name, std::string sceneName, ENTI
         entity.renderableAttributesComponent->renderableAttributes->pivotPoint = pivotPoint;
         scene->AddEntity(name, entity);
         messagePool->AddMessage("[ RESOURCES ] CREATED ENTITY |-" + name + "-| IN THE SCENE |-" + sceneName + "-|");
+        return scene->GetEntity(name);
     }
     else
     {
         messagePool->AddMessage("[ RESOURCES ] FAILED TO CREATE ENTITY |-" + name + "-| BECAUSE SCENE |-" + sceneName + "-| ISN'T FOUND");
+        return nullptr;
     }
 }
 
@@ -199,6 +201,8 @@ void ResourceManager::SetScene(std::string name)
     if(scene != nullptr)
     {
         activeScenes.push_back(scene);
+        activeScenes.push_back(GetScene("GUI"));
+        activeScenes.push_back(GetScene("DEBUG"));
         composer->SetScenes(activeScenes);
         messagePool->AddMessage("[ RESOURCES ] SET ACTIVE SCENE |-" + name + "-|");
     }

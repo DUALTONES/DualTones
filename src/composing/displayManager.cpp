@@ -5,17 +5,17 @@ void DisplayManager::SetReferenceResolution(Vector2 referenceResolution)
     this->referenceResolution = referenceResolution;
 }
 
-void DisplayManager::SetRelativeCoordinats(Vector2 relativeCoordinats)
+void DisplayManager::SetRelativeCoordinats(Vector2 relativeCoordinates)
 {
     this->relativeCoordinates = relativeCoordinates;
 }
 
 void DisplayManager::Update()
 {
-    GetResolution();
+    CalculateResolution();
 }
 
-void DisplayManager::GetResolution()
+void DisplayManager::CalculateResolution()
 {
     Vector2 newResolution;
     newResolution = {float(GetScreenWidth()), float(GetScreenHeight())};
@@ -36,6 +36,11 @@ void DisplayManager::CalculateScale()
 float DisplayManager::GetScale()
 {
     return scale;
+}
+
+Vector2 DisplayManager::GetResolution()
+{
+    return resolution;
 }
 
 Vector2 DisplayManager::GetAbsolutePosition(Vector2 position)

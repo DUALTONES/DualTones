@@ -27,6 +27,7 @@ public:
     Vector2 position = {0, 0};
     float scale = 1.0f;
     float rotation = 0.0f;
+    float depth = 0.0f;
 };
 
 class Transform3DComponent : public TransformComponent
