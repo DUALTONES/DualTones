@@ -4,6 +4,6 @@
 class Camera2DInternal
 {
 public:
-    Vector2 position;
-    float zoom;
+    Vector2 position = {0, 0};
+    float zoom = 0.0;
 };

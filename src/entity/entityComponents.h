@@ -24,6 +24,7 @@ public:
 class Transform2DComponent : public TransformComponent
 {
 public:
+    bool lockToScreen = false;
     Vector2 position = {0, 0};
     float scale = 1.0f;
     float rotation = 0.0f;

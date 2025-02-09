@@ -188,6 +188,30 @@ void ResourceManager::AddTextureToEntity(std::string name, std::string sceneName
     }
 }
 
+void ResourceManager::ModifyEntityDepth(std::string name, std::string sceneName, float depth)
+{
+    Scene* scene = GetScene(sceneName);
+    Entity* entity = scene->GetEntity(name);
+    Transform2DComponent* transform2DComponent = dynamic_cast<Transform2DComponent*>(entity->transformComponent);
+    transform2DComponent->depth = depth;
+}
+
+void ResourceManager::ModifyEntityScale(std::string name, std::string sceneName, float scale)
+{
+    Scene* scene = GetScene(sceneName);
+    Entity* entity = scene->GetEntity(name);
+    Transform2DComponent* transform2DComponent = dynamic_cast<Transform2DComponent*>(entity->transformComponent);
+    transform2DComponent->scale = scale;
+}
+
+void ResourceManager::ModifyEntityPosition(std::string name, std::string sceneName, Vector2 position)
+{
+    Scene* scene = GetScene(sceneName);
+    Entity* entity = scene->GetEntity(name);
+    Transform2DComponent* transform2DComponent = dynamic_cast<Transform2DComponent*>(entity->transformComponent);
+    transform2DComponent->position = position;
+}
+
 Renderable2D* ResourceManager::CreateRenderable2D(std::string name, RENDERABLE_TYPE renderableType)
 {
     renderable2DStack->AddRenderable2D(name, renderableType);

@@ -16,6 +16,11 @@ public:
     Renderable2D* CreateRenderable2D(std::string name, RENDERABLE_TYPE renderableType);
     void SetScene(std::string name);
     Scene* GetScene(std::string name);
+    //TEMP FUNCS
+    void ModifyEntityDepth(std::string name, std::string sceneName, float depth);
+    void ModifyEntityScale(std::string name, std::string sceneName, float scale);
+    void ModifyEntityPosition(std::string name, std::string sceneName, Vector2 position);
+    std::unordered_map<std::string, Scene> scenes;
 private:
     Composer* composer;
     MessagePool* messagePool;
@@ -23,5 +28,4 @@ private:
     FontStack* fontStack;
     Texture2D fallbackTexture;
     Renderable2DStack* renderable2DStack;
-    std::unordered_map<std::string, Scene> scenes;
 };

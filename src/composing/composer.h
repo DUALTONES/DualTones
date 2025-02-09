@@ -9,13 +9,13 @@
 class Composer
 {
 public:
-    Composer(MessagePool* messagePool, RenderQueue* renderQueue, DisplayManager* displayManager);
+    Composer(MessagePool* messagePool, RenderQueue* renderQueue, DisplayManager* displayManager, Camera2DInternal* camera2D);
     void Update();
     void SetScenes(std::vector<Scene*> scenes);
 private:
     DisplayManager* displayManager;
     RenderQueue* renderQueue;
     MessagePool* messagePool;
-    Camera2DInternal* Camera2DInternal;
+    Camera2DInternal* camera2D;
     std::vector<Scene*> scenes;
 };

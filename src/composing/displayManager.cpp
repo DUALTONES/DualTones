@@ -45,5 +45,15 @@ Vector2 DisplayManager::GetResolution()
 
 Vector2 DisplayManager::GetAbsolutePosition(Vector2 position)
 {
-    return {(position.x * relativeScale.x) + halfResolution.x, (position.y * relativeScale.y) + halfResolution.y};
+    return {(position.x * relativeScale.x) + halfResolution.x, (position.y * relativeScale.y * (-1)) + halfResolution.y };
+}
+
+Vector2 DisplayManager::GetRelativePosition(Vector2 position)
+{
+    return Vector2Multiply(position, relativeScale);
+}
+
+Vector2 DisplayManager::GetCameraOffset(Vector2 position)
+{
+    return {position.x * relativeScale.x, position.y * relativeScale.y};
 }
