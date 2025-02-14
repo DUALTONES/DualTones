@@ -11,6 +11,8 @@ void Renderable2D::Draw(Vector2 absolutePosition, float absoluteScale)
         }
         case RENDERABLE_TYPE::TEXT:
         {
+            if(renderable2DAtrributes->textAttributes->hasFill)
+                DrawRectangle(absolutePosition.x, absolutePosition.y, renderable2DAtrributes->dimensions.x * absoluteScale, renderable2DAtrributes->dimensions.y * absoluteScale, BLACK);
             DrawTextEx(*renderable2DAtrributes->textAttributes->font, renderable2DAtrributes->textAttributes->text.c_str(),
             absolutePosition, renderable2DAtrributes->textAttributes->fontSize * absoluteScale,
             renderable2DAtrributes->textAttributes->spacing * absoluteScale, WHITE);

@@ -13,6 +13,8 @@ public:
     float GetScale();
     Vector2 GetResolution();
     Vector2 GetAbsolutePosition(Vector2 position);
+    Vector2 GetRelativePosition(Vector2 position);
+    Vector2 GetCameraOffset(Vector2 position);
 private:
     void CalculateScale();
     Vector2 referenceResolution;

@@ -32,6 +32,8 @@ public:
 class TextAttributes
 {
 public:
+    bool hasFill = false;
+    float borderWidth;
     std::string text;
     Font* font;
     float fontSize;

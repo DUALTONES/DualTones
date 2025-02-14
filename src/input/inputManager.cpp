@@ -3,9 +3,9 @@
 void InputManager::Update()
 {
     inputEventsList.clear();
-    HandleKeyInput();
+    //HandleKeyInput();
     HandleMouseInput();
-    HandleTouchInput();
+    //HandleTouchInput();
 }
 
 void InputManager::HandleKeyInput()
@@ -47,7 +47,7 @@ void InputManager::HandleKeyInput()
 
 void InputManager::HandleMouseInput()
 {
-    mousePosition = GetMousePosition();
+    mousePosition = Vector2Subtract(GetMousePosition(), {float(GetScreenWidth() / 2), float(GetScreenHeight() / 2)});
 
     mouseDelta = GetMouseDelta();
     

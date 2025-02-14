@@ -108,7 +108,7 @@ Entity* ResourceManager::CreateEntity(std::string name, std::string sceneName, E
     }
 }
 
-void ResourceManager::AddTextToEntity(std::string name, std::string sceneName, std::string text, std::string fontName, float fontSize, float spacing)
+void ResourceManager::AddTextToEntity(std::string name, std::string sceneName, std::string text, std::string fontName, float fontSize, float spacing, bool hasFill)
 {
     Scene* scene = GetScene(sceneName);
     if(scene != nullptr)
@@ -125,6 +125,7 @@ void ResourceManager::AddTextToEntity(std::string name, std::string sceneName, s
                     entity->textAttributesComponent->textAttributes->font = font;
                     entity->textAttributesComponent->textAttributes->fontSize = fontSize;
                     entity->textAttributesComponent->textAttributes->spacing = spacing;
+                    entity->textAttributesComponent->textAttributes->hasFill = hasFill;
                     Renderable2D* renderable2D = dynamic_cast<Renderable2D*>(entity->renderableComponent->renderable);
                     renderable2D->CalculateDimensions();
                     messagePool->AddMessage("[ RESOURCES ] ADDED TEXT TO ENTITY");
@@ -186,6 +187,30 @@ void ResourceManager::AddTextureToEntity(std::string name, std::string sceneName
     {
         messagePool->AddMessage("[ RESOURCES ] NO SCENE");
     }
+}
+
+void ResourceManager::ModifyEntityDepth(std::string name, std::string sceneName, float depth)
+{
+    Scene* scene = GetScene(sceneName);
+    Entity* entity = scene->GetEntity(name);
+    Transform2DComponent* transform2DComponent = dynamic_cast<Transform2DComponent*>(entity->transformComponent);
+    transform2DComponent->depth = depth;
+}
+
+void ResourceManager::ModifyEntityScale(std::string name, std::string sceneName, float scale)
+{
+    Scene* scene = GetScene(sceneName);
+    Entity* entity = scene->GetEntity(name);
+    Transform2DComponent* transform2DComponent = dynamic_cast<Transform2DComponent*>(entity->transformComponent);
+    transform2DComponent->scale = scale;
+}
+
+void ResourceManager::ModifyEntityPosition(std::string name, std::string sceneName, Vector2 position)
+{
+    Scene* scene = GetScene(sceneName);
+    Entity* entity = scene->GetEntity(name);
+    Transform2DComponent* transform2DComponent = dynamic_cast<Transform2DComponent*>(entity->transformComponent);
+    transform2DComponent->position = position;
 }
 
 Renderable2D* ResourceManager::CreateRenderable2D(std::string name, RENDERABLE_TYPE renderableType)
