@@ -1,57 +1,43 @@
 #pragma once
-#include "../render/renderables.h"
 
-enum class ENTITY_TRANSFORM
-{
-    TRANSFORM_2D,
-    TRANSFORM_3D,
-    NONE
+#include "../render/renderable.h"
+#include "../core/resource.h"
+
+class NodeComponent {
+    NodeComponent* parent;
 };
 
-class EntityComponent
-{
+class Transform2DComponent : public Resource {
 public:
-    bool updating = false;
-    virtual ~EntityComponent() = default;
-};
-
-class TransformComponent : public EntityComponent
-{
-public:
-    virtual ~TransformComponent() = default;
-};
-
-class Transform2DComponent : public TransformComponent
-{
-public:
-    bool lockToScreen = false;
-    Vector2 position = {0, 0};
+    Vector2 poition = {0, 0};
     float scale = 1.0f;
     float rotation = 0.0f;
-    float depth = 0.0f;
+    float depth;
 };
 
-class Transform3DComponent : public TransformComponent
-{
+class Transform3DComponent : public Resource {
 public:
     Vector3 position = {0, 0, 0};
     float scale = 1.0f;
+    Vector3 rotation = {0, 0, 0};
 };
 
-class RenderableComponent : public EntityComponent
-{
+class RenderableComponent : public Resource {
 public:
-    Renderable* renderable;
+    void SetPivotPoint(Vector2 pivotPoint);
+    void SetTexture(Texture2D* texture);
+    Renderable2D* renderable2D;
 };
 
-class RenderableAttributesComponent : public EntityComponent
-{
+class TextAttributeComponent : public Resource {
 public:
-    Renderable2DAttributes* renderableAttributes;
-};
-
-class TextAttributesComponent : public EntityComponent
-{
-public:
+    void SetText(std::string text);
+    void SetFont(Font* font);
+    void SetFontSize(float fontSize);
+    void SetSpacing(float spacing);
+    void SetFill(bool hasFill);
+    void SetTextColor(Color* textColor);
+    void SetFillColor(Color* fillColor);
+    void SetOutlineColor(Color* outineColor);
     TextAttributes* textAttributes;
 };

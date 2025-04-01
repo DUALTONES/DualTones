@@ -1,28 +1,20 @@
 #include "renderManager.h"
 
-RenderManager::RenderManager(MessagePool* messagePool, RenderQueue *renderQueue)
-{
-    this->messagePool = messagePool;
+RenderManager::RenderManager(RenderQueue *renderQueue) {
     this->renderQueue = renderQueue;
 }
 
-void RenderManager::Update()
-{
+void RenderManager::Update() {
     BeginDrawing();
-    ClearBackground(BackgroundColor);
+    ClearBackground(BLACK);
 
     Draw();
 
     EndDrawing();
 }
 
-void RenderManager::Draw()
-{
-    for(const RenderCandidate& renderCandidate : renderQueue->queue)
-    {
-        if(Renderable2D* renderable = dynamic_cast<Renderable2D*>(renderCandidate.renderable))
-        {
-            renderable->Draw(renderCandidate.absolutePosition, renderCandidate.absoluteScale);
-        }
+void RenderManager::Draw() {
+    for(const RenderCandidate& renderCandidate : renderQueue->queue) {
+        renderCandidate.renderable2D->Draw(renderCandidate.absolutePosition, renderCandidate.absoluteScale);
     }
 }

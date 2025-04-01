@@ -1,15 +1,12 @@
 #include "engine.h"
 
-int main()
-{
+int main() {
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitAudioDevice();
-    //SetTargetFPS(60);
-    InitWindow(1280,720,"DualTones Engine v0.1.5");
+    InitWindow(1280,720,"DualTones Engine v0.2");
     Engine engine;
 
-    while(!WindowShouldClose())
-    {
+    while(!WindowShouldClose()) {
         engine.Update();
     }
-};
+}

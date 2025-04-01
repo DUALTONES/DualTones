@@ -1,247 +1,286 @@
 #include "resourceManager.h"
 
-ResourceManager::ResourceManager(MessagePool* messagePool, Renderable2DStack* renderable2DStack, TextureStack *textureStack, FontStack *fontStack, Composer* composer)
-{
-    this->messagePool = messagePool;
-    this->renderable2DStack = renderable2DStack;
-    this->textureStack = textureStack;
-    this->fontStack = fontStack;
-    this->composer = composer;
-    fallbackTexture = LoadTexture("../assets/funnysneko/img/fallback.png");
-    textureStack->AddTexture("FALLBACK", fallbackTexture);
-    CreateScene("GUI");
-    CreateScene("DEBUG");
+Resource *ResourceStack::AddResource(std::string name, Resource *resource) {
+    stack[name] = resource;
+    return stack[name];
 }
 
-void ResourceManager::LoadTextureToStack(std::string name, std::string path)
-{
-    Texture2D texture;
-    bool success = true;
-    if(FileExists(path.c_str()))
-    {
+Resource *ResourceStack::CreateResource(std::string name, RESOURCE_TYPE resourceType) {
+    Resource* resource = GetResource(name, resourceType);
+    if(resource != nullptr) {
+        RemoveResource(name, resourceType);
+    }
 
-        texture = LoadTexture(path.c_str());
-    }
-    else
-    {
-        success = false;
-        texture = fallbackTexture;
-        messagePool->AddMessage("[ RESOURCES ] FAILED TO LOAD TEXTURE FROM |-" + path + "-| BECAUSE FILE ISN'T FOUND");
-    }
-    textureStack->AddTexture(name, texture);
-    if(success)
-    {
-        messagePool->AddMessage("[ RESOURCES ] CREATED TEXTURE |-" + name + "-|");
-    }
-    else
-    {
-        messagePool->AddMessage("[ RESOURCES ] CREATED TEXTURE |-" + name + "-| AS A DEFAULT TEXTURE");
-    }
-}
-
-void ResourceManager::LoadFontToStack(std::string name, std::string path)
-{
-    Font font;
-    if(FileExists(path.c_str()))
-    {
-        font = LoadFont(path.c_str());
-        messagePool->AddMessage("[ RESOURCES ] LOADED FONT |-" + name + "-| FROM |-" + path + "-|");
-    }
-    else
-    {
-        messagePool->AddMessage("[ RESOURCES ] FAILED TO LOAD FONT |-" + name + "-| FROM |-" + path + "-| BECAUSE FILE ISN'T FOUND");
-        font = GetFontDefault();
-    }
-    fontStack->AddFont(name, font);
-}
-
-void ResourceManager::CreateScene(std::string name)
-{
-    Scene scene;
-    scenes.emplace(name, scene);
-    messagePool->AddMessage("[ RESOURCES ] SCENE |-" + name + "-| IS CREATED");
-}
-
-Entity* ResourceManager::CreateEntity(std::string name, std::string sceneName, ENTITY_TRANSFORM entityTransform, RENDERABLE_TYPE renderableType, PIVOT_POINT_2D pivotPoint)
-{
-    Scene* scene = GetScene(sceneName);
-    if(scene != nullptr)
-    {
-        Entity entity;
-        switch(entityTransform)
-        {
-            case ENTITY_TRANSFORM::TRANSFORM_2D:
-            {
-                entity.transformComponent = scene->AddTransform2DComponent(name);
-                break;
-            }
-            case ENTITY_TRANSFORM::TRANSFORM_3D:
-            {
-                entity.transformComponent = scene->AddTransform3DComponent(name);
-                break;
-            }
+    switch (resourceType) {
+        case RESOURCE_TYPE::SCENARIO : {
+            Scenario* scenario = new Scenario();
+            resource = dynamic_cast<Resource*>(scenario);
+            break;
         }
-        switch(renderableType)
-        {
-            case RENDERABLE_TYPE::TEXTURE:
-            case RENDERABLE_TYPE::TEXT:
-            {
-                entity.renderableComponent = scene->AddRenderableComponent(name, CreateRenderable2D(name, renderableType));
-                Renderable2D* renderable2D = dynamic_cast<Renderable2D*>(entity.renderableComponent->renderable);
-                entity.renderableAttributesComponent = scene->AddRenderableAttributesComponent(name, renderable2D->renderable2DAtrributes);
-                if(renderableType == RENDERABLE_TYPE::TEXT)
-                {
-                    entity.textAttributesComponent = scene->AddTextAttributesComponent(name, renderable2D->renderable2DAtrributes->textAttributes);
-                }
-                break;
-            }
+        case RESOURCE_TYPE::INSTRUCTION: {
+            resource = new Instruction();
+            break;
         }
-        entity.renderableAttributesComponent->renderableAttributes->pivotPoint = pivotPoint;
-        scene->AddEntity(name, entity);
-        messagePool->AddMessage("[ RESOURCES ] CREATED ENTITY |-" + name + "-| IN THE SCENE |-" + sceneName + "-|");
-        return scene->GetEntity(name);
-    }
-    else
-    {
-        messagePool->AddMessage("[ RESOURCES ] FAILED TO CREATE ENTITY |-" + name + "-| BECAUSE SCENE |-" + sceneName + "-| ISN'T FOUND");
-        return nullptr;
-    }
-}
-
-void ResourceManager::AddTextToEntity(std::string name, std::string sceneName, std::string text, std::string fontName, float fontSize, float spacing, bool hasFill)
-{
-    Scene* scene = GetScene(sceneName);
-    if(scene != nullptr)
-    {
-        Entity* entity = scene->GetEntity(name);
-        if(entity != nullptr)
-        {
-            if(entity->renderableAttributesComponent->renderableAttributes->renderableType == RENDERABLE_TYPE::TEXT)
-            {
-                Font* font = fontStack->GetFont(fontName);
-                if(font != nullptr)
-                {
-                    entity->textAttributesComponent->textAttributes->text = text;
-                    entity->textAttributesComponent->textAttributes->font = font;
-                    entity->textAttributesComponent->textAttributes->fontSize = fontSize;
-                    entity->textAttributesComponent->textAttributes->spacing = spacing;
-                    entity->textAttributesComponent->textAttributes->hasFill = hasFill;
-                    Renderable2D* renderable2D = dynamic_cast<Renderable2D*>(entity->renderableComponent->renderable);
-                    renderable2D->CalculateDimensions();
-                    messagePool->AddMessage("[ RESOURCES ] ADDED TEXT TO ENTITY");
-                }
-                else
-                {
-
-                }
-            }
-            else
-            {
-
-            }
+        case RESOURCE_TYPE::SCRIPT : {
+            resource = new Script();
+            break;
         }
-        else
-        {
-
+        case RESOURCE_TYPE::TEXTURE : {
+            resource = new TextureResource();
+            break;
+        }
+        case RESOURCE_TYPE::FONT : {
+            resource = new FontResource();
+            break;
+        }
+        case RESOURCE_TYPE::COLOR : {
+            resource = new ColorResource();
+            break;
+        }
+        case RESOURCE_TYPE::SCENE : {
+            resource = new Scene();
+            break;
+        }
+        case RESOURCE_TYPE::ENTITY : {
+            resource = new Entity();
+            break;
+        }
+        case RESOURCE_TYPE::ENTITY_COMPONENT_TRANSFORM_2D : {
+            resource = new Transform2DComponent();
+            break;
+        }
+        case RESOURCE_TYPE::ENTITY_COMPONENT_TRANSFORM_3D : {
+            resource = new Transform3DComponent();
+            break;
+        }
+        case RESOURCE_TYPE::ENTITY_COMPONENT_RENDERABLE : {
+            resource = new RenderableComponent();
+            break;
+        }
+        case RESOURCE_TYPE::ENTITY_COMPONENT_TEXT_ATTRIBUTES : {
+            resource = new TextAttributeComponent();
+            break;
+        }
+        case RESOURCE_TYPE::RENDERABLE_2D : {
+            resource = new Renderable2D();
+            break;
+        }
+        case RESOURCE_TYPE::TEXT_ATTRIBUTES : {
+            resource = new TextAttributes();
+            break;
+        }
+        default: {
+            break;
         }
     }
-    else
-    {
 
+    resource->name = name;
+    resource->type = resourceType;
+    return AddResource(name + std::to_string(int(resourceType)), resource);
+}
+
+Resource *ResourceStack::GetResource(std::string name, RESOURCE_TYPE resourceType) {
+    if(stack.find(name + std::to_string(int(resourceType))) != stack.end()) {
+        return stack[name + std::to_string(int(resourceType))];
+    }
+    return nullptr;
+}
+
+void ResourceStack::RemoveResource(std::string name, RESOURCE_TYPE resourceType) {
+    if(stack.find(name + std::to_string(int(resourceType))) != stack.end()) {
+        std::cout << "DELETING " << RESOURCE_TYPE_NAMES[(int)resourceType] << " " << name << std::endl;
+        delete stack[name + std::to_string(int(resourceType))];
+        stack.erase(name + std::to_string(int(resourceType)));
     }
 }
 
-void ResourceManager::AddTextureToEntity(std::string name, std::string sceneName, std::string textureName)
+void ResourceStack::DisplayContent() {
+    std::cout << "\n[ RESOURCE STACK CONTENT ]\n" << std::endl;
+    int index = 1;
+    for(std::pair<std::string, Resource*> pair : stack) {
+        std::cout << index << ": " << " |-" << pair.second->name << "-| [ " << pair.first << " ] " << RESOURCE_TYPE_NAMES[(int)pair.second->type] << std::endl;
+        index++;
+    }
+}
+
+void ResourceManager::Display() {
+    resourceStack.DisplayContent();
+}
+
+Scenario *ResourceManager::CreateScenario(std::string name)
 {
-    Scene* scene = GetScene(sceneName);
-    if(scene != nullptr)
-    {
-        Entity* entity = scene->GetEntity(name);
-        if(entity != nullptr)
-        {
-            if(entity->renderableAttributesComponent->renderableAttributes->renderableType == RENDERABLE_TYPE::TEXTURE)
-            {
-                Texture2D* texture = textureStack->GetTexture(textureName);
-                if(texture != nullptr)
-                {
-                    entity->renderableAttributesComponent->renderableAttributes->texture = texture;
-                    Renderable2D* renderable2D = dynamic_cast<Renderable2D*>(entity->renderableComponent->renderable);
-                    renderable2D->CalculateDimensions();
-                }
-                else
-                {
-                    messagePool->AddMessage("[ RESOURCES ] NO TEXTURE");
-                }
-            }
-            else
-            {
-                messagePool->AddMessage("[ RESOURCES ] NO ATTRIBUTES");
-            }
+    return dynamic_cast<Scenario*>(resourceStack.CreateResource(name, RESOURCE_TYPE::SCENARIO));
+}
+
+Instruction *ResourceManager::CreateInstruction(std::string name) {
+    return dynamic_cast<Instruction*>(resourceStack.CreateResource(name, RESOURCE_TYPE::INSTRUCTION));
+}
+
+Script *ResourceManager::CreateScript(std::string name) {
+    return dynamic_cast<Script*>(resourceStack.CreateResource(name, RESOURCE_TYPE::SCRIPT));
+}
+
+Texture2D *ResourceManager::LoadTextureToStack(std::string name, std::string path)
+{
+    TextureResource* textureResource;
+
+    if(FileExists(path.c_str())) {
+        Resource* resource = resourceStack.GetResource(name, RESOURCE_TYPE::TEXTURE);
+        if(resource == nullptr) {
+            resource = resourceStack.CreateResource(name, RESOURCE_TYPE::TEXTURE);
         }
-        else
-        {
-            messagePool->AddMessage("[ RESOURCES ] NO ENTITY");
+        textureResource = dynamic_cast<TextureResource*>(resource);
+        textureResource->texture = LoadTexture(path.c_str());
+    } else {
+        textureResource = dynamic_cast<TextureResource*>(resourceStack.GetResource("DUALTONES_FALLBACK", RESOURCE_TYPE::TEXTURE));
+    }
+
+    return &textureResource->texture;
+}
+
+Font *ResourceManager::LoadFontToStack(std::string name, std::string path){
+    FontResource* fontResource;
+
+    if(FileExists(path.c_str())) {
+        Resource* resource = resourceStack.GetResource(name, RESOURCE_TYPE::FONT);
+        if(resource == nullptr) {
+            resource = resourceStack.CreateResource(name, RESOURCE_TYPE::FONT);
         }
+        fontResource = dynamic_cast<FontResource*>(resource);
+        fontResource->font = LoadFont(path.c_str());
+    } else {
+        fontResource = dynamic_cast<FontResource*>(resourceStack.GetResource("DUALTONES_FALLBACK", RESOURCE_TYPE::FONT));
     }
-    else
-    {
-        messagePool->AddMessage("[ RESOURCES ] NO SCENE");
+
+    return &fontResource->font;
+}
+
+Color *ResourceManager::CreateColorOnStack(std::string name, Vector4 RGBA) {
+    Resource* resource = resourceStack.GetResource(name, RESOURCE_TYPE::COLOR);
+    if(resource == nullptr) {
+        resource = resourceStack.CreateResource(name, RESOURCE_TYPE::COLOR);
     }
+    ColorResource* colorResource = dynamic_cast<ColorResource*>(resource);
+    colorResource->color = {0, 0, 0, 0};
+
+    return &colorResource->color;
 }
 
-void ResourceManager::ModifyEntityDepth(std::string name, std::string sceneName, float depth)
-{
-    Scene* scene = GetScene(sceneName);
-    Entity* entity = scene->GetEntity(name);
-    Transform2DComponent* transform2DComponent = dynamic_cast<Transform2DComponent*>(entity->transformComponent);
-    transform2DComponent->depth = depth;
+Scene *ResourceManager::CreateScene(std::string name) {
+    return dynamic_cast<Scene*>(resourceStack.CreateResource(name, RESOURCE_TYPE::SCENE));
 }
 
-void ResourceManager::ModifyEntityScale(std::string name, std::string sceneName, float scale)
-{
-    Scene* scene = GetScene(sceneName);
-    Entity* entity = scene->GetEntity(name);
-    Transform2DComponent* transform2DComponent = dynamic_cast<Transform2DComponent*>(entity->transformComponent);
-    transform2DComponent->scale = scale;
-}
-
-void ResourceManager::ModifyEntityPosition(std::string name, std::string sceneName, Vector2 position)
-{
-    Scene* scene = GetScene(sceneName);
-    Entity* entity = scene->GetEntity(name);
-    Transform2DComponent* transform2DComponent = dynamic_cast<Transform2DComponent*>(entity->transformComponent);
-    transform2DComponent->position = position;
-}
-
-Renderable2D* ResourceManager::CreateRenderable2D(std::string name, RENDERABLE_TYPE renderableType)
-{
-    renderable2DStack->AddRenderable2D(name, renderableType);
-    return renderable2DStack->GetRenderable2D(name);
-}
-
-void ResourceManager::SetScene(std::string name)
-{
-    std::vector<Scene*> activeScenes;
-    Scene* scene = GetScene(name);
-    if(scene != nullptr)
-    {
-        activeScenes.push_back(scene);
-        activeScenes.push_back(GetScene("GUI"));
-        activeScenes.push_back(GetScene("DEBUG"));
-        composer->SetScenes(activeScenes);
-        messagePool->AddMessage("[ RESOURCES ] SET ACTIVE SCENE |-" + name + "-|");
+Entity *ResourceManager::CreateEntity(std::string name, ENTITY_TRANSFORM entityTransform, RENDERABLE_TYPE entityRenderable) {
+    Resource* resource = resourceStack.GetResource(name, RESOURCE_TYPE::ENTITY);
+    if(resource != nullptr) {
+        Entity* entity = dynamic_cast<Entity*>(resource);
+        DeleteEntity(name, entity->transform, entity->renderableType);
     }
-    else
-    {
-        messagePool->AddMessage("[ RESOURCES ] FAILED TO SET ACTIVE SCENE |-" + name + "-| BECAUSE SCENE ISN'T FOUND");
+    resource = resourceStack.CreateResource(name, RESOURCE_TYPE::ENTITY);
+    Entity* entity = dynamic_cast<Entity*>(resource);
+
+    if(entityTransform == ENTITY_TRANSFORM::TRANSFORM_2D) {
+        entity->transform2DComponent = dynamic_cast<Transform2DComponent*>(resourceStack.CreateResource(
+            name,
+            RESOURCE_TYPE::ENTITY_COMPONENT_TRANSFORM_2D
+        ));
+    } else if(entityTransform == ENTITY_TRANSFORM::TRANSFORM_3D) {
+        entity->transform3DComponent = dynamic_cast<Transform3DComponent*>(resourceStack.CreateResource(
+            name,
+            RESOURCE_TYPE::ENTITY_COMPONENT_TRANSFORM_3D
+        ));
     }
+    entity->transform = entityTransform;
+
+    if(entityRenderable != RENDERABLE_TYPE::NONE) {
+        entity->renderableComponent = dynamic_cast<RenderableComponent*>(resourceStack.CreateResource(
+            name,
+            RESOURCE_TYPE::ENTITY_COMPONENT_RENDERABLE
+        ));
+        entity->renderableComponent->renderable2D = dynamic_cast<Renderable2D*>(resourceStack.CreateResource(
+            name,
+            RESOURCE_TYPE::RENDERABLE_2D
+        ));
+    }
+    if(entityRenderable == RENDERABLE_TYPE::TEXT) {
+        entity->textAttributeComponent = dynamic_cast<TextAttributeComponent*>(resourceStack.CreateResource(
+            name,
+            RESOURCE_TYPE::ENTITY_COMPONENT_TEXT_ATTRIBUTES
+        ));
+        entity->textAttributeComponent->textAttributes = dynamic_cast<TextAttributes*>(resourceStack.CreateResource(
+            name,
+            RESOURCE_TYPE::TEXT_ATTRIBUTES
+        ));
+        entity->renderableComponent->renderable2D->textAttributes = entity->textAttributeComponent->textAttributes;
+    }
+    entity->renderableType = entityRenderable;
+
+    return entity;
 }
 
-Scene *ResourceManager::GetScene(std::string name)
-{
-    if(scenes.find(name) == scenes.end())
-    {
-        return nullptr;
+Texture2D *ResourceManager::GetTexture(std::string name) {
+    Resource* resource = resourceStack.GetResource(name, RESOURCE_TYPE::TEXTURE);
+    if (resource == nullptr) {
+        resource = resourceStack.GetResource("DUALTONES_FALLBACK", RESOURCE_TYPE::TEXTURE);
     }
-    return &scenes[name];
+    TextureResource* textureResource = dynamic_cast<TextureResource*>(resource);
+    return &textureResource->texture;
+}
+
+Font *ResourceManager::GetFont(std::string name) {
+    Resource* resource = resourceStack.GetResource(name, RESOURCE_TYPE::FONT);
+    if (resource == nullptr) {
+        resource = resourceStack.GetResource("DUALTONES_FALLBACK", RESOURCE_TYPE::FONT);
+    }
+    FontResource* fontResource = dynamic_cast<FontResource*>(resource);
+    return &fontResource->font;
+}
+
+Color *ResourceManager::GetColor(std::string name) {
+    Resource* resource = resourceStack.GetResource(name, RESOURCE_TYPE::FONT);
+    if (resource == nullptr) {
+        resource = resourceStack.GetResource("DUALTONES_FALLBACK", RESOURCE_TYPE::COLOR);
+    }
+    ColorResource* colorResource = dynamic_cast<ColorResource*>(resource);
+    return &colorResource->color;
+}
+
+Scene *ResourceManager::GetScene(std::string name) {
+    Resource* resource = resourceStack.GetResource(name, RESOURCE_TYPE::SCENE);
+    if(resource == nullptr) {
+        resource = resourceStack.GetResource("DUALTONES_FALLBACK", RESOURCE_TYPE::SCENE);
+    }
+    Scene* scene = dynamic_cast<Scene*>(resource);
+    return scene;
+}
+
+Entity *ResourceManager::GetEntity(std::string name) {
+    Resource* resource = resourceStack.GetResource(name, RESOURCE_TYPE::ENTITY);
+    if(resource == nullptr) {
+        resource = resourceStack.GetResource("DUALTONES_FALLBACK", RESOURCE_TYPE::ENTITY);
+    }
+    Entity* entity = dynamic_cast<Entity*>(resource);
+    return entity;
+}
+
+void ResourceManager::DeleteResource(std::string name, RESOURCE_TYPE resourceType) {
+    resourceStack.RemoveResource(name, resourceType);
+}
+
+void ResourceManager::DeleteEntity(std::string name, ENTITY_TRANSFORM entityTransform, RENDERABLE_TYPE entityRenderable)
+{
+    if(entityTransform == ENTITY_TRANSFORM::TRANSFORM_2D) {
+        resourceStack.RemoveResource(name, RESOURCE_TYPE::ENTITY_COMPONENT_TRANSFORM_2D);
+    } else if(entityTransform == ENTITY_TRANSFORM::TRANSFORM_3D) {
+        resourceStack.RemoveResource(name, RESOURCE_TYPE::ENTITY_COMPONENT_TRANSFORM_3D);
+    }
+    if(entityRenderable != RENDERABLE_TYPE::NONE) {
+        resourceStack.RemoveResource(name, RESOURCE_TYPE::ENTITY_COMPONENT_RENDERABLE);
+        resourceStack.RemoveResource(name, RESOURCE_TYPE::RENDERABLE_2D);
+    }
+    if(entityRenderable == RENDERABLE_TYPE::TEXT) {
+        resourceStack.RemoveResource(name, RESOURCE_TYPE::ENTITY_COMPONENT_TEXT_ATTRIBUTES);
+        resourceStack.RemoveResource(name, RESOURCE_TYPE::TEXT_ATTRIBUTES);
+    }
+    resourceStack.RemoveResource(name, RESOURCE_TYPE::ENTITY);
 }

@@ -3,8 +3,7 @@
 #include "raylib/raymath.h"
 #include <iostream>
 
-class DisplayManager
-{
+class DisplayManager {
 public:
     void SetReferenceResolution(Vector2 referenceResolution);
     void SetRelativeCoordinats(Vector2 relativeCoordinates);

@@ -1,59 +1,54 @@
 #include "displayManager.h"
 
-void DisplayManager::SetReferenceResolution(Vector2 referenceResolution)
-{
+void DisplayManager::SetReferenceResolution(Vector2 referenceResolution) {
     this->referenceResolution = referenceResolution;
 }
 
-void DisplayManager::SetRelativeCoordinats(Vector2 relativeCoordinates)
-{
+void DisplayManager::SetRelativeCoordinats(Vector2 relativeCoordinates) {
     this->relativeCoordinates = relativeCoordinates;
 }
 
-void DisplayManager::Update()
-{
+void DisplayManager::Update() {
     CalculateResolution();
 }
 
-void DisplayManager::CalculateResolution()
-{
+void DisplayManager::CalculateResolution() {
     Vector2 newResolution;
     newResolution = {float(GetScreenWidth()), float(GetScreenHeight())};
-    if(!Vector2Equals(newResolution, resolution))
-    {
+    if(!Vector2Equals(newResolution, resolution)) {
         resolution = newResolution;
         halfResolution = Vector2Scale(resolution, 0.5f);
         CalculateScale();
     }
 }
 
-void DisplayManager::CalculateScale()
-{
+void DisplayManager::CalculateScale() {
     relativeScale = Vector2Divide(resolution, relativeCoordinates);
     scale = std::min(resolution.x/referenceResolution.x,resolution.y/referenceResolution.y);
 }
 
-float DisplayManager::GetScale()
-{
+float DisplayManager::GetScale() {
     return scale;
 }
 
-Vector2 DisplayManager::GetResolution()
-{
+Vector2 DisplayManager::GetResolution() {
     return resolution;
 }
 
-Vector2 DisplayManager::GetAbsolutePosition(Vector2 position)
-{
-    return {(position.x * relativeScale.x) + halfResolution.x, (position.y * relativeScale.y * (-1)) + halfResolution.y };
+Vector2 DisplayManager::GetAbsolutePosition(Vector2 position) {
+    return {
+        (position.x * relativeScale.x) + halfResolution.x,
+        (position.y * relativeScale.y * (-1)) + halfResolution.y
+    };
 }
 
-Vector2 DisplayManager::GetRelativePosition(Vector2 position)
-{
+Vector2 DisplayManager::GetRelativePosition(Vector2 position) {
     return Vector2Multiply(position, relativeScale);
 }
 
-Vector2 DisplayManager::GetCameraOffset(Vector2 position)
-{
-    return {position.x * relativeScale.x, position.y * relativeScale.y};
+Vector2 DisplayManager::GetCameraOffset(Vector2 position) {
+    return {
+        position.x * relativeScale.x,
+        position.y * relativeScale.y
+    };
 }

@@ -1,15 +1,10 @@
 #include "renderQueue.h"
 
-void RenderQueue::CreateRenderCandidate(Renderable *renderable, Vector2 absolutePosition, float absoluteScale)
-{
-    RenderCandidate renderCandidate;
-    renderCandidate.renderable = renderable;
-    renderCandidate.absolutePosition = absolutePosition;
-    renderCandidate.absoluteScale = absoluteScale;
-    queue.push_back(renderCandidate);
+void RenderQueue::Flush() {
+    queue.clear();
 }
 
-void RenderQueue::Flush()
-{
-    queue.clear();
+void RenderQueue::CreateRenderCandidate(Renderable2D *renderable2D, Vector2 absolutePosition, float absoluteScale) {
+    RenderCandidate renderCandidate(renderable2D, absolutePosition, absoluteScale);
+    queue.push_back(renderCandidate);
 }

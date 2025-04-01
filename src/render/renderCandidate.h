@@ -1,10 +1,11 @@
 #pragma once
-#include "../entity/entityComponents.h"
 
-class RenderCandidate
-{
+#include "renderable.h"
+
+class RenderCandidate {
 public:
-    Renderable* renderable;
+    RenderCandidate(Renderable2D* renderable2D, Vector2 absolutePosition, float absoluteScale);
+    Renderable2D* renderable2D;
     Vector2 absolutePosition;
     float absoluteScale;
 };

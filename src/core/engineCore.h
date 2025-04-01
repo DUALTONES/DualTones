@@ -1,36 +1,24 @@
 #pragma once
-#include "../render/renderManager.h"
-#include "../composing/composer.h"
-#include "resourceManager.h"
-#include "../debug/debugManager.h"
-#include "../input/inputManager.h"
-#include "../controls/controlManager.h"
-#include "../controls/dialogueManager.h"
 
-class EngineCore
-{
+#include "resourceManager.h"
+#include "../composing/composer.h"
+#include "../render/renderManager.h"
+#include "controls/scripting/VANILLASCRIPT/vanillaInterpreter.h"
+
+class EngineCore {
 public:
     EngineCore();
+    void VanillaReadScenario(std::string path);
     void TEMP_INIT();
-    void HandleInput();
-    void UpdateGameState();
     void Compose();
     void Draw();
 private:
-    DebugManager* debugManager;
-    MessagePool messagePool;
-    Composer* composer;
-    Camera2DInternal camera2D;
+    ResourceManager resourceManager;
+    ScenarioManager* scenarioManager;
+    VanillaInterpreter* vanillaInterpreter;
     DisplayManager displayManager;
-    InputManager inputManager;
-    ControlManager* controlManager;
-    DialogueManager* dialogueManager;
-    TimeManager timeManager;
-    RenderManager* renderManager;
-    ResourceManager* resourceManager;
-    Renderable2DStack renderable2DStack;
-    TextureStack textureStack;
-    FontStack fontStack;
-    Scene* activeScene;
     RenderQueue renderQueue;
+    Camera2DInternal camera2D;
+    Composer* composer;
+    RenderManager* renderManager;
 };

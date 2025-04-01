@@ -1,11 +1,11 @@
 #pragma once
+
 #include <vector>
 #include "renderCandidate.h"
 
-class RenderQueue
-{
+class RenderQueue {
 public:
-    void CreateRenderCandidate(Renderable* renderable, Vector2 absolutePosition, float absoluteScale);
     void Flush();
+    void CreateRenderCandidate(Renderable2D* renderable2D, Vector2 absolutePosition, float absoluteScale);
     std::vector<RenderCandidate> queue;
 };

@@ -1,11 +1,13 @@
 #pragma once
+
 #include "entityComponents.h"
 
-class Entity
-{
+class Entity : public Resource {
 public:
-    TransformComponent* transformComponent = nullptr;
+    ENTITY_TRANSFORM transform = ENTITY_TRANSFORM::NONE;
+    RENDERABLE_TYPE renderableType = RENDERABLE_TYPE::NONE;
+    Transform2DComponent* transform2DComponent = nullptr;
+    Transform3DComponent* transform3DComponent = nullptr;
     RenderableComponent* renderableComponent = nullptr;
-    RenderableAttributesComponent* renderableAttributesComponent = nullptr;
-    TextAttributesComponent* textAttributesComponent = nullptr;
+    TextAttributeComponent* textAttributeComponent = nullptr;
 };
